@@ -14,8 +14,8 @@ toc
 
 fprintf('\n>> Data Training <<\n')
 tic
-dtrain.lambda = .1; % regularization parameter
-dtrain.scale = 1/3; % 1/(features * std(X)), where features=3 and std(X)=1
+dtrain.lambda = 0; % regularization parameter
+dtrain.scale = .2; % 1/(features * std(X)), where features=3 and std(X)=1
 dtrain.theta = trainModel(dtrain);
 toc
 
@@ -36,13 +36,12 @@ tic
 toc
 
 fprintf('\n>> Save Results <<\n')
+result.X = X;
+result.y = y;
 result.dtrain = dtrain;
 result.dval = dval;
 result.dtest = dtest;
-save('result.mat','result')
+save(sprintf('result_r%.1f_s%.1f.mat',dtrain.lambda,dtrain.scale),'-struct','result')
 
 fprintf('\n>> Plot Results <<\n')
-figure, mesh(result.G{1},result.G{2},result.T);
-hold on;
-scatter3(X(y==1,1),X(y==1,2),X(y==1,3),'r*');
-hold off;
+figure, tignPlot(X,y,result.G,result.T);
