@@ -1,4 +1,4 @@
-function [dtrain, dval, dtest] = preprocess(X,y,split)
+function [dtrain, dval, dtest] = preprocessData(X,y,split)
 %preprocess - Pre-process data to run ML on satellite detections
 %   preprocess(X,y,split) returns train, validation, and test data cleaned,
 %   normalized, and including supports for Kernel generation.
@@ -7,7 +7,7 @@ fprintf('> Cleaning the data...\n');
 X_fire = X(y==1,:);
 X_nofire = X(y==0,:);
 b = .01;
-mask = logical(zeros(size(X_nofire,1),1));
+mask = false(size(X_nofire,1),1);
 X_b_min = X_fire(:,1:2)-b;
 X_b_max = X_fire(:,1:2)+b;
 for i = 1:size(X_fire,1)
