@@ -16,7 +16,7 @@ costFunction = @(t) logisticRegCostFunction(t, X, y, lambda);
 switch option
     case 'fminunc'
         % ... fminunc built-in function
-        options = optimset('Display', 'iter', 'MaxIter', 50, 'GradObj', 'on');
+        options = optimset('Display', 'iter', 'MaxIter', 500, 'GradObj', 'on');
         theta = fminunc(costFunction, initial_theta, options);
     case 'fmincg'
         % ... fmincg from ML course

@@ -1,21 +1,22 @@
 %% Driver for ML experiments
 
+in_file = 'polecreek.csv';
 fprintf('\n>> Data Reading <<\n')
 tic
-data = csvread('polecreek.csv',1,0);
+data = csvread(in_file,1,0);
 X = data(:,1:3);
 y = data(:,4);
 toc
 
 fprintf('\n>> Data Pre-processing <<\n')
 tic
-[dtrain,dval,dtest] = preprocessData(X,y,[.8,.1,.1]);
+[dtrain,dval,dtest] = preprocessData(X,y,[.9,.05,.05]);
 toc
 
 fprintf('\n>> Data Training <<\n')
 tic
-dtrain.lambda = 0; % regularization parameter
-dtrain.scale = .2; % 1/(features * std(X)), where features=3 and std(X)=1
+dtrain.lambda = 10; % regularization parameter
+dtrain.scale = .1; % 1/(features * std(X)), where features=3 and std(X)=1
 dtrain.theta = trainModel(dtrain);
 toc
 
@@ -41,7 +42,9 @@ result.y = y;
 result.dtrain = dtrain;
 result.dval = dval;
 result.dtest = dtest;
-save(sprintf('result_r%.1f_s%.1f.mat',dtrain.lambda,dtrain.scale),'-struct','result')
+out_file = sprintf('result_r%.2f_s%.2f.mat',dtrain.lambda,dtrain.scale);
+save(out_file,'-struct','result')
+fprintf('File %s saved\n',out_file)
 
-fprintf('\n>> Plot Results <<\n')
-figure, tignPlot(X,y,result.G,result.T);
+%fprintf('\n>> Plot Results <<\n')
+%figure, tignPlot(X,y,result.G,result.T);
