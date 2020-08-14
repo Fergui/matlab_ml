@@ -13,16 +13,11 @@ tic
 [dtrain,dval,dtest] = preprocessData(X,y,[.9,.05,.05]);
 toc
 
-fprintf('\n>> Data Training <<\n')
+fprintf('\n>> Tunning and Training <<\n')
 tic
-dtrain.lambda = 10; % regularization parameter
-dtrain.scale = .1; % 1/(features * std(X)), where features=3 and std(X)=1
-dtrain.theta = trainModel(dtrain);
-toc
-
-fprintf('\n>> Threshold Tunning <<\n')
-tic
-dtrain.threshold = tuneThreshold(dtrain,dval);
+dtrain.lambda_opts = [.1,1]; %[.1,.5,1,5,10]; % regularization parameter
+dtrain.scale_opts = [.1,1]; %[.1,.5,1,5,10]; % 1/(features * std(X)), where features=3 and std(X)=1
+[dtrain.theta,dtrain.score,dtrain.threshold] = trainModel(dtrain,dval);
 dtrain.split = log(dtrain.threshold/(1-dtrain.threshold));
 toc
 
@@ -33,7 +28,7 @@ toc
 
 fprintf('\n>> Fire Arrival Time Estimation <<\n')
 tic
-[result.G,result.T] = tignEstimation(dtrain);
+result = tignEstimation(dtrain);
 toc
 
 fprintf('\n>> Save Results <<\n')

@@ -4,7 +4,7 @@ function tignPlot(X,y,G,T)
 
 mesh(G{1},G{2},T);
 hold on;
-scatter3(X(y==1,1),X(y==1,2),X(y==1,3),'r*');
+scatter3(X(y==1,1),X(y==1,2),X(y==1,3),'r.');
 hold off;
 xlabel('Longitude');
 xlabel('Latitude');

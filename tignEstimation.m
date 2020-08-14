@@ -1,4 +1,4 @@
-function [G,T] = tignEstimation(dtrain)
+function result = tignEstimation(dtrain)
 %tignEstimation - Use trained model to estimate fire arrival time
 %   [G,T] = tignEstimation(dtrain) returns the grid (G) and fire arrival
 %   time (T).
@@ -15,9 +15,9 @@ K = gaussianKernel(X(:,1:2),dtrain.X_supp(:,1:2),dtrain.scale);
 fprintf('> Post-processing fire arrival time...\n');
 T = (dtrain.theta(1)+K*dtrain.theta(3:end)-dtrain.split)/dtrain.theta(2);
 T(T>max(dtrain.X(:,3))) = max(dtrain.X(:,3));
-T = reshape(T,dims(1),dims(2))*dtrain.sigma(3)+dtrain.mu(3);
+result.T = reshape(T,dims(1),dims(2))*dtrain.sigma(3)+dtrain.mu(3);
 xx = Xp*dtrain.sigma(1)+dtrain.mu(1);
 yy = Yp*dtrain.sigma(2)+dtrain.mu(2);
-G = {xx, yy};
+result.G = {xx, yy};
 
 end
